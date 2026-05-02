@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Supplies</h1>
+{% if supplies %}
+<table class="table table-striped align-middle"><thead><tr><th>Supply</th><th>Farm</th><th>Farmer</th><th>Qty</th><th>Rate</th><th>Cost</th><th>Date</th></tr></thead><tbody>
+  {% for item in supplies %}
+  <tr>
+    <td>{{ item.supply_name }}</td>
+    <td>{{ item.farm_name }}</td>
+    <td>{{ item.farmer_name }}</td>
+    <td>{{ item.quantity }} {{ item.unit }}</td>
+    <td>₹{{ item.rate_per_unit or 0 }}</td>
+    <td>₹{{ item.total_cost or 0 }}</td>
+    <td>{{ item.supply_date }}</td>
+  </tr>
+  {% endfor %}
+</tbody></table>
+{% else %}
+<p>No supply records found.</p>
+{% endif %}
+{% endblock %}

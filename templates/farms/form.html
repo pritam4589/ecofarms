@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title">{{ farm and 'Edit Farm' or 'Add New Farm' }}</h1>
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Farmer</label>
+        <select name="farmer_id" class="form-control" required>
+          <option value="">Select farmer</option>
+          {% for farmer in farmers_list %}
+            <option value="{{ farmer.id }}" {% if farm and farm.farmer_id == farmer.id %}selected{% endif %}>
+              {{ farmer.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Farm Name</label>
+        <input name="farm_name" class="form-control" value="{{ farm.farm_name if farm else '' }}" placeholder="Enter farm name" required>
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input name="location" class="form-control" value="{{ farm.location if farm else '' }}" placeholder="Enter farm location">
+      </div>
+      <div class="form-group">
+        <label>Area (acres)</label>
+        <input name="area_acres" type="number" step="0.01" class="form-control" value="{{ farm.area_acres if farm else '' }}" placeholder="0.00">
+      </div>
+      <div class="form-group">
+        <label>Crop Type</label>
+        <input name="crop_type" class="form-control" value="{{ farm.crop_type if farm else '' }}" placeholder="e.g., Wheat, Rice">
+      </div>
+      <div class="form-group">
+        <label>Season</label>
+        <input name="season" class="form-control" value="{{ farm.season if farm else '' }}" placeholder="e.g., Kharif, Rabi">
+      </div>
+      {% if farm %}
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status" class="form-control">
+          <option value="Active" {% if farm.status == 'Active' %}selected{% endif %}>Active</option>
+          <option value="Inactive" {% if farm.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a class="btn btn-outline" href="{{ url_for('farms') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

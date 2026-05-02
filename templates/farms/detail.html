@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-panel">
+  <div class="section-header">
+    <div>
+      <h2>{{ farm.farm_name }}</h2>
+      <p class="section-copy">Overview of the farm with quick actions for seed, supply, updates, harvests and reports.</p>
+    </div>
+    <div class="action-bar">
+      <a class="btn btn-secondary" href="{{ url_for('edit_farm', id=farm.id) }}">Edit Farm</a>
+      <a class="btn btn-success" href="{{ url_for('add_seed', farm_id=farm.id) }}">Add Seed</a>
+      <a class="btn btn-success" href="{{ url_for('add_supply', farm_id=farm.id) }}">Add Supply</a>
+      <a class="btn btn-success" href="{{ url_for('add_update', farm_id=farm.id) }}">Add Update</a>
+      <a class="btn btn-success" href="{{ url_for('add_harvest', farm_id=farm.id) }}">Add Harvest</a>
+      <a class="btn btn-info" href="{{ url_for('farm_report', id=farm.id) }}">Download Report</a>
+    </div>
+  </div>
+  <div class="section-grid">
+    <div>
+      <p><strong>Farmer:</strong> {{ farm.farmer_name }}</p>
+      <p><strong>Location:</strong> {{ farm.location or '—' }}</p>
+      <p><strong>Crop:</strong> {{ farm.crop_type or '—' }}</p>
+    </div>
+    <div>
+      <p><strong>Season:</strong> {{ farm.season or '—' }}</p>
+      <p><strong>Area:</strong> {{ farm.area_acres or '—' }} acres</p>
+      <p><strong>Status:</strong> {{ farm.status }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-panel">
+  <div class="section-header">
+    <h2>Seeds</h2>
+    <span class="badge badge-green">{{ seeds|length }}</span>
+  </div>
+  {% if seeds %}
+  <ul class="list-group mb-0">
+    {% for item in seeds %}
+    <li class="list-group-item">{{ item.seed_name }} ({{ item.variety }}) — {{ item.quantity_kg }} kg on {{ item.sow_date }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="section-copy">No seeds recorded yet. Use the action buttons above to add a new seed entry.</p>
+  {% endif %}
+</div>
+
+<div class="section-panel">
+  <div class="section-header">
+    <h2>Supplies</h2>
+    <span class="badge badge-gold">{{ supplies|length }}</span>
+  </div>
+  {% if supplies %}
+  <ul class="list-group mb-0">
+    {% for item in supplies %}
+    <li class="list-group-item">{{ item.supply_name }} — {{ item.quantity }} {{ item.unit }} on {{ item.supply_date }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="section-copy">No supply records added yet. Add supplies to track costs and inventory.</p>
+  {% endif %}
+</div>
+
+<div class="section-grid">
+  <div class="section-panel">
+    <div class="section-header">
+      <h2>Daily Updates</h2>
+      <span class="badge badge-blue">{{ updates|length }}</span>
+    </div>
+    {% if updates %}
+    <ul class="list-group mb-0">
+      {% for item in updates %}
+      <li class="list-group-item">{{ item.update_date }} {{ item.update_time }} — {{ item.growth_stage }} / {{ item.weather }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="section-copy">No updates logged for this farm yet.</p>
+    {% endif %}
+  </div>
+  <div class="section-panel">
+    <div class="section-header">
+      <h2>Harvests</h2>
+      <span class="badge badge-green">{{ harvests|length }}</span>
+    </div>
+    {% if harvests %}
+    <ul class="list-group mb-0">
+      {% for item in harvests %}
+      <li class="list-group-item">{{ item.harvest_date }} — {{ item.total_output_kg }} kg @ ₹{{ item.rate_per_kg }} /kg</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="section-copy">No harvest entries have been recorded yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="section-panel">
+  <div class="section-header">
+    <h2>Payments</h2>
+    <span class="badge {% if payments|selectattr('status', 'equalto', 'Paid')|list|length %}badge-green{% else %}badge-red{% endif %}">{{ payments|length }}</span>
+  </div>
+  {% if payments %}
+  <ul class="list-group mb-0">
+    {% for item in payments %}
+    <li class="list-group-item">{{ item.payment_date }} — ₹{{ item.amount }} — {{ item.status }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="section-copy">No payment records exist for this farm yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

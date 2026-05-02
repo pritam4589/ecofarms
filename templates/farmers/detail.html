@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">{{ farmer.name }}</h1>
+<div class="row mb-4">
+  <div class="col-md-6"><p><strong>Phone:</strong> {{ farmer.phone or '—' }}</p><p><strong>Email:</strong> {{ farmer.email or '—' }}</p><p><strong>Address:</strong> {{ farmer.address or '—' }}</p></div>
+  <div class="col-md-6"><p><strong>ID Number:</strong> {{ farmer.id_number or '—' }}</p><p><strong>Join Date:</strong> {{ farmer.join_date or '—' }}</p><p><strong>Status:</strong> {{ farmer.status }}</p></div>
+</div>
+<div class="button-row">
+  <a class="btn btn-secondary" href="{{ url_for('edit_farmer', id=farmer.id) }}">Edit Farmer</a>
+  <form method="post" action="{{ url_for('delete_farmer', id=farmer.id) }}" onsubmit="return confirm('Delete this farmer and all related records?');" class="inline-form">
+    <button type="submit" class="btn btn-danger">Delete Farmer</button>
+  </form>
+</div>
+<h2>Farms</h2>
+{% if farms %}
+<ul class="list-group mb-4">
+  {% for farm in farms %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ farm.farm_name }} <a class="btn btn-sm btn-outline-primary" href="{{ url_for('farm_detail', id=farm.id) }}">View Farm</a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="mb-4">No farms for this farmer.</p>
+{% endif %}
+<h2>Payments</h2>
+{% if payments %}
+<table class="table table-striped"><thead><tr><th>Date</th><th>Farm</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+  {% for payment in payments %}
+  <tr><td>{{ payment.payment_date }}</td><td>{{ payment.farm_name }}</td><td>₹{{ '{:,.2f}'.format(payment.amount) }}</td><td>{{ payment.status }}</td></tr>
+  {% endfor %}
+</tbody></table>
+{% else %}
+<p>No payment records.</p>
+{% endif %}
+{% endblock %}

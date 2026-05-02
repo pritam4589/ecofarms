@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Farmers</h1>
+  <div class="page-actions"><a class="btn btn-primary" href="{{ url_for('add_farmer') }}">Add Farmer</a></div>
+</div>
+<div class="card">
+  <div class="card-body">
+    {% if farmers %}
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      {% for farmer in farmers %}
+      <tr>
+        <td>{{ farmer.id }}</td>
+        <td>{{ farmer.name }}</td>
+        <td>{{ farmer.phone or '—' }}</td>
+        <td>{{ farmer.email or '—' }}</td>
+        <td><span class="badge {% if farmer.status == 'Active' %}badge-green{% else %}badge-gray{% endif %}">{{ farmer.status }}</span></td>
+        <td><a class="btn btn-sm btn-outline" href="{{ url_for('farmer_detail', id=farmer.id) }}">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody></table></div>
+    {% else %}
+    <div class="empty-row"><p>No farmers found.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

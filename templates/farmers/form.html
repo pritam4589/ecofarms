@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title">{{ farmer.id and 'Edit Farmer' or 'Add Farmer' }}</h1>
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Name</label>
+        <input name="name" type="text" class="form-control" value="{{ farmer.name if farmer else '' }}" required>
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input name="phone" type="tel" pattern="[0-9+\-() ]{7,20}" class="form-control" value="{{ farmer.phone if farmer else '' }}" placeholder="+91 98765 43210">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input name="email" type="email" class="form-control" value="{{ farmer.email if farmer else '' }}" placeholder="farmer@example.com">
+      </div>
+      <div class="form-group">
+        <label>ID Number</label>
+        <input name="id_number" class="form-control" value="{{ farmer.id_number if farmer else '' }}" required pattern="[A-Za-z0-9\- ]{5,25}" title="Use 5-25 letters, numbers, spaces, or dashes">
+      </div>
+      <div class="form-group full">
+        <label>Address</label>
+        <textarea name="address" class="form-control" placeholder="Enter address">{{ farmer.address if farmer else '' }}</textarea>
+      </div>
+      {% if farmer %}
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status" class="form-control">
+          <option value="Active" {% if farmer.status == 'Active' %}selected{% endif %}>Active</option>
+          <option value="Inactive" {% if farmer.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a class="btn btn-outline" href="{{ url_for('farmers') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

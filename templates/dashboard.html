@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="welcome-banner">
+  <div>
+    <p class="eyebrow">Performance overview</p>
+    <h2>Farm insights made simple.</h2>
+    <p class="banner-copy">Track sowing, supplies, harvest payments and daily updates in one polished dashboard. See key farm metrics at a glance and act faster.</p>
+  </div>
+  <div class="banner-actions">
+    <a class="btn btn-primary" href="{{ url_for('farmers') }}">Farmers</a>
+    <a class="btn btn-outline" href="{{ url_for('farms') }}">Farms</a>
+    <a class="btn btn-gold" href="{{ url_for('payments') }}">Payments</a>
+  </div>
+</div>
+
+<div class="dashboard-cards">
+  <div class="stat-card large-card">
+    <div class="stat-content">
+      <div class="stat-icon green">👩‍🌾</div>
+      <div>
+        <div class="stat-value">{{ stats.farmers }}</div>
+        <div class="stat-label">Active farmers</div>
+      </div>
+    </div>
+    <p class="card-note">Farmers currently managing crops and deliveries.</p>
+  </div>
+  <div class="stat-card large-card">
+    <div class="stat-content">
+      <div class="stat-icon gold">🌾</div>
+      <div>
+        <div class="stat-value">{{ stats.farms }}</div>
+        <div class="stat-label">Active farms</div>
+      </div>
+    </div>
+    <p class="card-note">Fields and plots actively being monitored.</p>
+  </div>
+  <div class="stat-card large-card">
+    <div class="stat-content">
+      <div class="stat-icon red">⏳</div>
+      <div>
+        <div class="stat-value">{{ stats.payments_pending }}</div>
+        <div class="stat-label">Pending payments</div>
+      </div>
+    </div>
+    <p class="card-note">Harvest payouts still awaiting settlement.</p>
+  </div>
+  <div class="stat-card large-card">
+    <div class="stat-content">
+      <div class="stat-icon blue">💵</div>
+      <div>
+        <div class="stat-value">₹{{ '{:,.2f}'.format(stats.total_paid) }}</div>
+        <div class="stat-label">Total paid</div>
+      </div>
+    </div>
+    <p class="card-note">Cumulative farmer payments completed.</p>
+  </div>
+</div>
+
+<div class="recent-grid">
+  <section class="card recent-card">
+    <div class="card-header"><h3>Recent farm updates</h3></div>
+    <div class="card-body">
+      {% if recent_updates %}
+      <div class="table-wrap"><table><thead><tr><th>Farm</th><th>Date</th><th>Update</th></tr></thead><tbody>
+        {% for update in recent_updates %}
+        <tr><td>{{ update.farm_name }}</td><td>{{ update.update_date }}</td><td>{{ update.description or 'No description' }}</td></tr>
+        {% endfor %}
+      </tbody></table></div>
+      {% else %}
+      <div class="empty-row"><p>No recent updates.</p></div>
+      {% endif %}
+    </div>
+  </section>
+  <section class="card recent-card">
+    <div class="card-header"><h3>Recent payments</h3></div>
+    <div class="card-body">
+      {% if recent_payments %}
+      <div class="table-wrap"><table><thead><tr><th>Farm</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+        {% for payment in recent_payments %}
+        <tr><td>{{ payment.farm_name }}</td><td>{{ payment.payment_date }}</td><td>₹{{ '{:,.2f}'.format(payment.amount) }}</td><td><span class="badge {% if payment.status == 'Paid' %}badge-green{% else %}badge-red{% endif %}">{{ payment.status }}</span></td></tr>
+        {% endfor %}
+      </tbody></table></div>
+      {% else %}
+      <div class="empty-row"><p>No recent payments.</p></div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

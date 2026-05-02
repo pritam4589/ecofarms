@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title">Add Daily Update for {{ farm.farm_name }}</h1>
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Growth Stage</label>
+        <input name="growth_stage" class="form-control" placeholder="e.g., Flowering, Harvest ready">
+      </div>
+      <div class="form-group">
+        <label>Weather</label>
+        <input name="weather" class="form-control" placeholder="e.g., Sunny, Rainy">
+      </div>
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea name="description" class="form-control" placeholder="Describe the farm progress..."></textarea>
+      </div>
+      <div class="form-group full">
+        <label>Issue Reported</label>
+        <textarea name="issue_reported" class="form-control" placeholder="Any issues or concerns..."></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save Update</button>
+      <a class="btn btn-outline" href="{{ url_for('farm_detail', id=farm.id) }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

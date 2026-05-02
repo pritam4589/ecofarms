@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title">Add Supply for {{ farm.farm_name }}</h1>
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Supply Name</label>
+        <input name="supply_name" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <input name="supply_type" class="form-control" placeholder="e.g., Fertilizer, Seeds">
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input name="quantity" type="number" step="0.01" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Unit</label>
+        <input name="unit" class="form-control" required placeholder="e.g., kg, liters">
+      </div>
+      <div class="form-group">
+        <label>Rate per Unit (₹)</label>
+        <input name="rate_per_unit" type="number" step="0.01" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Supply Date</label>
+        <input name="supply_date" type="date" class="form-control" required>
+      </div>
+      <div class="form-group full">
+        <label>Notes</label>
+        <textarea name="notes" class="form-control" placeholder="Additional notes about this supply..."></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save Supply</button>
+      <a class="btn btn-outline" href="{{ url_for('farm_detail', id=farm.id) }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

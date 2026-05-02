@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title">Record Payment</h1>
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Farmer</label>
+        <select name="farmer_id" class="form-control" required>
+          <option value="">Select farmer</option>
+          {% for farmer in farmers_list %}
+            <option value="{{ farmer.id }}">{{ farmer.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Farm</label>
+        <select name="farm_id" class="form-control" required>
+          <option value="">Select farm</option>
+          {% for farm in farms_list %}
+            <option value="{{ farm.id }}">{{ farm.farm_name }} ({{ farm.farmer_name }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input name="amount" type="number" step="0.01" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Payment Type</label>
+        <input name="payment_type" class="form-control" placeholder="e.g., Harvest Payment">
+      </div>
+      <div class="form-group">
+        <label>Payment Date</label>
+        <input name="payment_date" type="date" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Reference</label>
+        <input name="reference" class="form-control" placeholder="Transaction reference">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status" class="form-control">
+          <option value="Pending">Pending</option>
+          <option value="Paid">Paid</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Notes</label>
+        <textarea name="notes" class="form-control" placeholder="Additional payment details..."></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save Payment</button>
+      <a class="btn btn-outline" href="{{ url_for('payments') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

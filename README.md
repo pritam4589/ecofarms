@@ -10,13 +10,15 @@ This is a Flask application for managing farmers, farms, supplies, daily updates
 venv\Scripts\Activate.ps1`
 3. Install dependencies:
    - `pip install -r requirements.txt`
-4. Run the app:
+4. Copy `.env.example` to `.env` and set your secret key:
+   - `copy .env.example .env`
+5. Run the app:
    - `python app.py`
 
 ## Notes
 
 - The app uses SQLite by default.
-- Add users on `/register` or use the default `admin/admin123` account.
+- Add users on `/register` page.
 
 ## Uploading to GitHub
 

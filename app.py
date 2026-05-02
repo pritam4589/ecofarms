@@ -11,7 +11,7 @@ from reportlab.lib.units import cm
 import io
 
 app = Flask(__name__)
-app.secret_key = "ecofarms_secret_2024"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key-change-in-production")
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 DB = "eco_farms.db"
 
@@ -216,7 +216,7 @@ def init_db():
         FOREIGN KEY(user_id) REFERENCES users(id),
         FOREIGN KEY(farmer_id) REFERENCES farmers(id),
         FOREIGN KEY(farm_id) REFERENCES farms(id)
-    );
+);
     """)
     conn.commit()
     ensure_column_exists(conn, "supplies", "rate_per_unit", "REAL DEFAULT 0")
@@ -232,11 +232,12 @@ def init_db():
     ensure_column_exists(conn, "harvests", "user_id", "INTEGER")
     ensure_column_exists(conn, "payments", "user_id", "INTEGER")
     conn.commit()
-    admin = conn.execute("SELECT id FROM users WHERE username=?", ("admin",)).fetchone()
-    if not admin:
-        conn.execute("INSERT INTO users (username,password_hash,full_name,email,created_at) VALUES (?,?,?,?,?)",
-                     ("admin", generate_password_hash("admin123"), "Administrator", "admin@ecofarms.local", datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        conn.commit()
+    # Note: Remove or randomize default admin creation for production
+    # admin = conn.execute("SELECT id FROM users WHERE username=?", ("admin",)).fetchone()
+    # if not admin:
+    #     conn.execute("INSERT INTO users (username,password_hash,full_name,email,created_at) VALUES (?,?,?,?,?)",
+    #                  ("admin", generate_password_hash("admin123"), "Administrator", "admin@ecofarms.local", datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    #     conn.commit()
     conn.close()
 
 init_db()

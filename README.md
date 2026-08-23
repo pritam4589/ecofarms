@@ -1,4 +1,4 @@
-# Eco Farms Final
+# Eco Farms 
 
 This is a Flask application for managing farmers, farms, supplies, daily updates, harvests, and payments.
 
